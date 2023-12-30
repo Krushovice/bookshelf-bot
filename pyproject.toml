@@ -8,6 +8,8 @@ packages = [{include = "bookshelf_bot"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+python-dotenv = "^1.0.0"
+aiogram = "^3.2.0"
 
 
 [build-system]
