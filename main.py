@@ -1,11 +1,11 @@
 import asyncio
 import logging
 import sys
-from config_data.config_reader import Config, load_config
+from bot.config_data.config_reader import Config, load_config
 
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-from handlers import user_handlers
+from bot.handlers import user_handlers
 
 # Bot token can be obtained via https://t.me/BotFather
 logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from lexicon.lexicon_data import LEXICON_RU
+from bot.lexicon.lexicon_data import LEXICON_RU
 
 
 # ------- Создаем клавиатуру через ReplyKeyboardBuilder -------

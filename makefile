@@ -2,4 +2,4 @@ install:
 	poetry install
 
 start:
-	poetry run python bot.py
+	poetry run python main.py

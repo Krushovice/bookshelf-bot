@@ -1,8 +1,8 @@
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
 from aiogram import F, Router
-from keyboards.markups import yes_no_kb, profile_kb
-from lexicon.lexicon_data import LEXICON_RU
+from bot.keyboards.markups import yes_no_kb, profile_kb
+from bot.lexicon.lexicon_data import LEXICON_RU
 
 
 router = Router()
