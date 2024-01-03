@@ -1,6 +1,6 @@
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
-from aiogram import F, Router, types
+from aiogram import F, Router
 from keyboards.markups import yes_no_kb, profile_kb
 from lexicon.lexicon_data import LEXICON_RU
 
@@ -15,7 +15,7 @@ async def command_start_handler(message: Message):
 
 @router.message(Command('help'))
 async def command_help_handler(message: Message):
-    await message.answer(text=LEXICON_RU['/help'], reply_markup=yes_no_kb)
+    await message.answer(text=LEXICON_RU['/help'])
 
 
 @router.message(Command('profile'))
@@ -39,7 +39,8 @@ async def process_save_answer(message: Message):
     if len(msg) < 5:
         await message.answer(text=LEXICON_RU['not_enough'])
     else:
-        await message.answer(text=LEXICON_RU['save_books'])
+        await message.answer(text=LEXICON_RU['save_books'],
+                             reply_markup=profile_kb)
 
 
 @router.message(F.text == LEXICON_RU['wish_list'])
