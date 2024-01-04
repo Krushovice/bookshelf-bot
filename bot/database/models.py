@@ -1,48 +1,44 @@
-from sqlalchemy import (
-    Column, Integer, VARCHAR, TIMESTAMP, ForeignKey
-    )
-from sqlalchemy.ext.declarative import declarative_base as Base
-from sqlalchemy.orm import relationship
+import datetime
+from typing import Annotated
+from sqlalchemy import ForeignKey, text
+from database import Base, str_255
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 
-class BaseModel(Base):
-    __abstract__ = True
-
-    id = Column(Integer, nullable=False,
-                unique=True,
-                primary_key=True,
-                autoincrement=True)
-    created_at = Column(TIMESTAMP, nullable=False)
-    updated_at = Column(TIMESTAMP, nullable=False)
-
-    def __repr__(self):
-        return "<{0.__class__.__name__}(id={0.id!r})>".format(self)
+intpk = Annotated[int, mapped_column(primary_key=True)]
+creaded_at = Annotated[datetime.datetime,
+                       mapped_column(
+                           server_default=text("TIMEZONE('utc',now())"))]
+updated_at = Annotated[datetime.datetime,
+                       mapped_column(
+                           server_default=text("TIMEZONE('utc',now())"),
+                           onupdate=datetime.datetime.utcnow)]
 
 
-class Reader(BaseModel):
+class Reader(Base):
     __tablename__ = 'readers'
 
-    first_name = Column(VARCHAR(255), nullable=False)
-    last_name = Column(VARCHAR(255), nullable=False)
-    username = Column(VARCHAR(255), unique=True, nullable=False)
-    books = relationship('Book', backref='reader')
+    id: Mapped[intpk]
+    first_name = Mapped[str_255]
+    last_name = Mapped[str_255]
+    username = Mapped[str] = mapped_column(unique=True)
+    books = Mapped[list["Book"]] = relationship(
+        back_populates="reader",
+        primaryjoin="and_(Reader.id == Book.reader_id)",
+        order_by="Book.id.desc()",
+    )
 
 
-class Book(BaseModel):
+class Book(Base):
     __tablename__ = 'books'
 
-    name = Column(VARCHAR(255),
-                  nullable=False,
-                  unique=True)
-    author = Column(VARCHAR(255),
-                    nullable=False
-                    )
-    category = Column(VARCHAR(255),
-                      nullable=False
-                      )
-    reader_id = Column(Integer,
-                       ForeignKey('readers.id',
-                                  ondelete='CASCADE'),
-                       nullable=False,
-                       index=True
-                       )
+    name = Mapped[str_255]
+    author = Mapped[str]
+    description = Mapped[str_255]
+    category = Mapped[str]
+    reader_id: Mapped[int] = mapped_column(ForeignKey("readers.id",
+                                                      ondelete="CASCADE"))
+
+    reader: Mapped[Reader] = relationship(
+        back_populates="books",
+    )

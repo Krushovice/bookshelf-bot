@@ -1,7 +1,7 @@
 import asyncio
 import logging
 import sys
-from bot.config_data.config_reader import Config, load_config
+from bot.config_data.config_reader import settings
 
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
@@ -21,11 +21,8 @@ async def main() -> None:
     # Выводим в консоль информацию о начале запуска бота
     logger.info('Starting bot')
 
-    # Загружаем конфиг в переменную config
-    config: Config = load_config()
-
     dp = Dispatcher()
-    bot = Bot(token=config.tg_bot.token,
+    bot = Bot(token=settings.bot_token,
               parse_mode=ParseMode.HTML)
     # Регистриуем роутеры в диспетчере
     dp.include_router(user_handlers.router)

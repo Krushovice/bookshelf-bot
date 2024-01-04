@@ -1,25 +1,35 @@
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import sessionmaker
-# from .models import Reader, Book
-from bot.config_data.config_reader import Config, load_config
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession
+    )
+from sqlalchemy.orm import sessionmaker, Session, DeclarativeBase
+from sqlalchemy import String
+from typing import Annotated
+from bot.config_data import settings
 
 
-class CreateDatabase():
-    ''' Инициализируем движок базы данных '''
-    def __init__(self, *args, **kwargs):
-        self.metadata = MetaData()
-        self.config: Config = load_config()
-        self.engine = create_engine(self.config.database_url, echo=True)
+async_engine = create_async_engine(
+            url=settings.database_url,
+            echo=True)
 
-    def create_session(self, *args, **kwargs):
-        self.Session = sessionmaker(bind=self.engine)
-        self.Session.configure(bind=self.engine)
-        self.session = self.Session()
-        return self.session
+asasync_session_factory = async_sessionmaker(async_engine)
 
-    def create_tables(self, *args, **kwargs):
-        try:
-            self.metadata.create_all(self.engine)
-        except Exception as e:
-            # Обработка исключения при создании таблиц
-            print(f"Ошибка при создании таблиц: {e}")
+str_255 = Annotated[str, 255]
+
+
+class Base(DeclarativeBase):
+    type_annotation_map = {
+        str_255: String(255)
+    }
+
+    repr_cols_num = 3
+    repr_cols = tuple()
+
+    def __repr__(self):
+        cols = []
+        for idx, col in enumerate(self.__table__.colummns.keys()):
+            if col in self.repr_cols or idx >= self.repr_cols_num:
+                cols.append(f"{col}={getattr(self, col)}")
+
+        return f"<{self.__class__.__name__}({', '.join(cols)})>"
