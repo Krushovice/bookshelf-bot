@@ -1,7 +1,7 @@
 import datetime
 from typing import Annotated
 from sqlalchemy import ForeignKey, text
-from database import Base, str_255
+from .db import Base, str_255
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
 
@@ -19,10 +19,10 @@ class Reader(Base):
     __tablename__ = 'readers'
 
     id: Mapped[intpk]
-    first_name = Mapped[str_255]
-    last_name = Mapped[str_255]
-    username = Mapped[str] = mapped_column(unique=True)
-    books = Mapped[list["Book"]] = relationship(
+    first_name: Mapped[str_255]
+    last_name: Mapped[str_255]
+    username: Mapped[str] = mapped_column(unique=True)
+    books: Mapped[list["Book"]] = relationship(
         back_populates="reader",
         primaryjoin="and_(Reader.id == Book.reader_id)",
         order_by="Book.id.desc()",
@@ -32,10 +32,11 @@ class Reader(Base):
 class Book(Base):
     __tablename__ = 'books'
 
-    name = Mapped[str_255]
-    author = Mapped[str]
-    description = Mapped[str_255]
-    category = Mapped[str]
+    id: Mapped[intpk]
+    name: Mapped[str_255]
+    author: Mapped[str] = mapped_column(nullable=True)
+    description: Mapped[str_255] = mapped_column(nullable=True)
+    category: Mapped[str] = mapped_column(nullable=True)
     reader_id: Mapped[int] = mapped_column(ForeignKey("readers.id",
                                                       ondelete="CASCADE"))
 

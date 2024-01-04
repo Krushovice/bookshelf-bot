@@ -1,13 +1,13 @@
 from sqlalchemy import Integer, and_, or_, select, insert, text
-from db import Base, async_engine, async_session_factory
-from models import Reader, Book
+from .db import Base, async_engine, async_session_factory
+from .models import Reader, Book
 
 
 class AsyncOrm:
 
     @staticmethod
     async def create_tables():
-        async with async_engine.begin as conn:
+        async with async_engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
 
@@ -21,7 +21,7 @@ class AsyncOrm:
             await session.commit()
 
     @staticmethod
-    async def select_reader(user_id: int):
+    async def select_reader_by_id(user_id: int, **kwargs):
         async with async_session_factory() as session:
             query = (
                 select(
@@ -31,13 +31,27 @@ class AsyncOrm:
                 )
             print(query.compile(compile_kwargs={'literal_binds': True}))
             res = await session.execute(query)
-            result = res.all()
-            return result
+            result = res.one()
+            return result[0]
+
+    @staticmethod
+    async def select_reader_by_username(**kwargs):
+        async with async_session_factory() as session:
+            query = (
+                select(
+                    Reader.id)
+                .select_from(Reader)
+                .filter(Reader.username == kwargs['username'])
+                )
+            print(query.compile(compile_kwargs={'literal_binds': True}))
+            res = await session.execute(query)
+            result = res.one()
+            return result[0]
 
     @staticmethod
     async def insert_books(reader_id: int, book_names: list):
         async with async_session_factory() as session:
-            books = [Book(name=book_name) for book_name in book_names]
+            books = [Book(name=book_name, reader_id=reader_id) for book_name in book_names]
             session.add_all(books)
             await session.commit()
 
@@ -55,8 +69,7 @@ class AsyncOrm:
             result = res.all()
             # Извлечение имен книг из результатов запроса
             book_names = [book.name for book in result]
-
-            return book_names  # Возвращаем список имен книг
+            return book_names
 
     @staticmethod
     async def update_reader(reader_id: int, **kwargs):

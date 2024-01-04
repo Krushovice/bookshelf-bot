@@ -6,14 +6,14 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import sessionmaker, Session, DeclarativeBase
 from sqlalchemy import String
 from typing import Annotated
-from bot.config_data import settings
+from bot.config_data.config_reader import settings
 
 
 async_engine = create_async_engine(
             url=settings.database_url,
             echo=True)
 
-asasync_session_factory = async_sessionmaker(async_engine)
+async_session_factory = async_sessionmaker(async_engine)
 
 str_255 = Annotated[str, 255]
 
