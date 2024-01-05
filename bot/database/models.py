@@ -37,9 +37,11 @@ class Book(Base):
     author: Mapped[str] = mapped_column(nullable=True)
     description: Mapped[str_255] = mapped_column(nullable=True)
     category: Mapped[str] = mapped_column(nullable=True)
+    creaded_at: Mapped[creaded_at]
+    updated_at: Mapped[updated_at]
     reader_id: Mapped[int] = mapped_column(ForeignKey("readers.id",
                                                       ondelete="CASCADE"))
 
-    reader: Mapped[Reader] = relationship(
+    reader: Mapped["Reader"] = relationship(
         back_populates="books",
     )

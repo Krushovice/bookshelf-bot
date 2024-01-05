@@ -51,7 +51,16 @@ async def show_check_list(message: Message):
 
 @router.message(F.text == LEXICON_RU['category'])
 async def show_category(message: Message):
-    pass
+    readers = await AsyncOrm.select_readers_by_selectin()
+
+    response = ""
+    for reader in readers:
+        response += f"{reader.username}:\n"
+        for book in reader.books:
+            response += f"- {book.name}\n"
+        response += "\n"
+
+    await message.answer(text=response)
 
 
 @router.message(F.text)
