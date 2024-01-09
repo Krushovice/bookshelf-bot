@@ -21,7 +21,10 @@ async def main() -> None:
 
     # Выводим в консоль информацию о начале запуска бота
     logger.info('Starting bot')
-    await AsyncOrm.create_tables()
+
+    # proxy_url = settings.proxy_url
+    # connector = TCPConnector(ssl=False)
+    # session = ClientSession(connector=connector, trust_env=True, url=proxy_url)
 
     dp = Dispatcher()
     bot = Bot(token=settings.bot_token,
@@ -32,6 +35,7 @@ async def main() -> None:
 
     # Пропускаем накопившиеся апдейты и запускаем polling
     await bot.delete_webhook(drop_pending_updates=True)
+    await AsyncOrm.create_tables()
     await dp.start_polling(bot)
 
 

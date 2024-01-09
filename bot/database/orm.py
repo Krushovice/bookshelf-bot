@@ -38,14 +38,14 @@ class AsyncOrm:
             return result[0]
 
     @staticmethod
-    async def select_reader_by_username(**kwargs):
+    async def select_reader_by_username(username):
         r = aliased(Reader)
         async with async_session_factory() as session:
             query = (
                 select(
                     r.id)
                 .select_from(r)
-                .filter(r.username == kwargs['username'])
+                .filter(r.username == username)
                 )
             print(query.compile(compile_kwargs={'literal_binds': True}))
             res = await session.execute(query)
@@ -65,9 +65,32 @@ class AsyncOrm:
             return result
 
     @staticmethod
-    async def insert_books(reader_id: int, book_names: list):
+    async def update_reader(reader_id: int, **kwargs):
         async with async_session_factory() as session:
-            books = [Book(name=book_name, reader_id=reader_id) for book_name in book_names] # noqa
+            reader = await session.get(Reader, reader_id)
+            for key, value in kwargs.items():
+                setattr(reader, key, value)
+            await session.refresh(reader)
+            await session.commit()
+
+    @staticmethod
+    async def insert_book(reader_id: int, book_info: object):
+        async with async_session_factory() as session:
+            book = Book(name=book_info.title,
+                        author=book_info.author,
+                        description=book_info.description[:255],
+                        genre=book_info.categories[0],
+                        reader_id=reader_id)
+            session.add(book)
+            await session.commit()
+
+    @staticmethod
+    async def insert_books(reader_id: int, book_list: list):
+        async with async_session_factory() as session:
+            books = [Book(name=book['title'],
+                          reader_id=reader_id,
+                          author=book['author'],
+                          category=['genre']) for book in book_list] # noqa
             session.add_all(books)
             await session.commit()
 
@@ -86,14 +109,6 @@ class AsyncOrm:
             res = await session.execute(query)
             result = res.all()
             # Извлечение имен книг из результатов запроса
-            book_names = [b.name for book in result]
+            book_names = [book.name for book in result]
+            print(book_names)
             return book_names
-
-    @staticmethod
-    async def update_reader(reader_id: int, **kwargs):
-        async with async_session_factory() as session:
-            reader = await session.get(Reader, reader_id)
-            for key, value in kwargs.items():
-                setattr(reader, key, value)
-            await session.refresh(reader)
-            await session.commit()

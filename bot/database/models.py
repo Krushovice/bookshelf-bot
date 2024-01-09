@@ -24,8 +24,8 @@ class Reader(Base):
     username: Mapped[str] = mapped_column(unique=True)
     books: Mapped[list["Book"]] = relationship(
         back_populates="reader",
-        primaryjoin="and_(Reader.id == Book.reader_id)",
-        order_by="Book.id.desc()",
+        # primaryjoin="and_(Reader.id == Book.reader_id)",
+        # order_by="Book.id.desc()",
     )
 
 
@@ -36,7 +36,7 @@ class Book(Base):
     name: Mapped[str_255]
     author: Mapped[str] = mapped_column(nullable=True)
     description: Mapped[str_255] = mapped_column(nullable=True)
-    category: Mapped[str] = mapped_column(nullable=True)
+    genre: Mapped[str] = mapped_column(nullable=True)
     creaded_at: Mapped[creaded_at]
     updated_at: Mapped[updated_at]
     reader_id: Mapped[int] = mapped_column(ForeignKey("readers.id",

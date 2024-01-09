@@ -16,6 +16,9 @@ sqlalchemy = "^2.0.25"
 pydentic = "^0.0.1.dev3"
 asyncpg = "^0.29.0"
 pydantic-settings = "^2.1.0"
+requests = "^2.31.0"
+aiohttp-socks = "^0.8.4"
+openai = "^1.6.1"
 
 
 [build-system]

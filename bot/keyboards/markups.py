@@ -26,12 +26,16 @@ yes_no_kb: ReplyKeyboardMarkup = yes_no_kb_builder.as_markup(
 button_1 = KeyboardButton(text=LEXICON_RU['check_list'])
 button_2 = KeyboardButton(text=LEXICON_RU['category'])
 button_3 = KeyboardButton(text=LEXICON_RU['wish_list'])
+button_4 = KeyboardButton(text=LEXICON_RU['list_readers'])
+button_5 = KeyboardButton(text=LEXICON_RU['recomendize'])
 
 
 profile_kb = ReplyKeyboardMarkup(
     keyboard=[[button_1],
               [button_2],
-              [button_3]],
+              [button_3],
+              [button_4],
+              [button_5]],
     resize_keyboard=True,
     one_time_keyboard=True
 )
