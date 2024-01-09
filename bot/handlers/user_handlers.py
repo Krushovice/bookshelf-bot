@@ -83,7 +83,7 @@ async def show_category(message: Message):
 @router.message(F.text)
 async def process_save_answer(message: Message):
     msg = message.text.split(', ')
-    if len(msg) == 1:
+    if len(msg) == 5:
         await AsyncOrm.insert_reader(first_name=message.from_user.first_name,
                                      last_name=message.from_user.last_name,
                                      username=message.from_user.username)

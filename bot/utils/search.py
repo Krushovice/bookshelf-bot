@@ -29,8 +29,8 @@ def get_book_info(title):
             book_data = data['items'][0]['volumeInfo']
             title = book_data.get('title', 'Название неизвестно')
             author = book_data.get('authors', ['Автор неизвестен'])[0]
-            description = book_data.get('description', 'Описание отсутствует')
-            categories = book_data.get('categories', ['Категория не указана'])
+            description = book_data.get('description', 'Описание отсутствует')[:255] # noqa
+            categories = book_data.get('categories', ['Категория не указана'])[0] # noqa
 
             return BookInfo(title, author, description, categories)
         else:

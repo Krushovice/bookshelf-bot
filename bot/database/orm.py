@@ -78,8 +78,8 @@ class AsyncOrm:
         async with async_session_factory() as session:
             book = Book(name=book_info.title,
                         author=book_info.author,
-                        description=book_info.description[:255],
-                        genre=book_info.categories[0],
+                        description=book_info.description,
+                        genre=book_info.categories,
                         reader_id=reader_id)
             session.add(book)
             await session.commit()
@@ -90,7 +90,7 @@ class AsyncOrm:
             books = [Book(name=book['title'],
                           reader_id=reader_id,
                           author=book['author'],
-                          category=['genre']) for book in book_list] # noqa
+                          category=['genre']) for book in book_list]
             session.add_all(books)
             await session.commit()
 
