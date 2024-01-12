@@ -1,9 +1,8 @@
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
-    async_sessionmaker,
-    AsyncSession
+    async_sessionmaker
     )
-from sqlalchemy.orm import sessionmaker, Session, DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import String
 from typing import Annotated
 from bot.config_data.config_reader import settings
