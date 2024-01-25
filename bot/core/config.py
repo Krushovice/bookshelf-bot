@@ -5,12 +5,17 @@ class Settings(BaseSettings):
     DB_URL: str
     BOT_TOKEN: str
     OPENAI_KEY: str
-    PROXY_URL: str
+    DEBUG: bool
     API_KEY: str
+    PROXY_URL: str
+    ECHO: bool = False
 
     @property
-    def database_url(self) -> str:
-        return f"{self.DB_URL}"
+    def db_url(self) -> str:
+        if self.DEBUG:
+            return "sqlite+aiosqlite:///./db.sqlite3"
+        else:
+            return f"{self.DB_URL}"
 
     @property
     def bot_token(self) -> str:
