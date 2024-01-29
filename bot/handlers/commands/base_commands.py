@@ -3,12 +3,12 @@ from aiogram.types import Message
 from aiogram import Router
 from bot.keyboards.reply_keyboard import yes_no_kb, profile_kb
 from bot.lexicon.lexicon_data import LEXICON_RU
-from bot.core.models.crud import AsyncOrm
+from bot.core.models.orm import AsyncOrm
 
 # from bot.utils.search import get_book_info
 
 
-router = Router()
+router = Router(name=__name__)
 
 
 @router.message(CommandStart())
