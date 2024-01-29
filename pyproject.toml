@@ -20,6 +20,7 @@ requests = "^2.31.0"
 aiohttp-socks = "^0.8.4"
 openai = "1.6"
 aiosqlite = "^0.19.0"
+alembic = "^1.13.1"
 
 
 [build-system]
