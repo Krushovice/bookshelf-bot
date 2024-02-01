@@ -15,7 +15,7 @@ def get_book_info(title):
     endpoint = "https://www.googleapis.com/books/v1/volumes"
     params = {
         "q": title,
-        "maxResults": 1,
+        "maxResults": 3,
         "fields": "items(volumeInfo/title,volumeInfo/authors,volumeInfo/description,volumeInfo/categories)",  # noqa
         "key": settings.api_key,
     }

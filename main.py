@@ -5,7 +5,7 @@ from bot.core.config import settings
 
 from aiogram import Bot, Dispatcher
 from aiogram.enums import ParseMode
-from bot.core.models.orm import AsyncOrm
+# from bot.core.models.orm import AsyncOrm
 from bot.handlers import router as main_router
 
 # Bot token can be obtained via https://t.me/BotFather
@@ -30,7 +30,7 @@ async def main() -> None:
 
     # Пропускаем накопившиеся апдейты и запускаем polling
     await bot.delete_webhook(drop_pending_updates=True)
-    await bot.session.close()
+    # await bot.session.close()
     # await AsyncOrm.create_tables()
     await dp.start_polling(bot)
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)

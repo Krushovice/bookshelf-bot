@@ -1,19 +1,19 @@
-from sqlalchemy import Integer, and_, or_, select, insert, text
-from sqlalchemy.engine import Result
-from sqlalchemy.orm import aliased, selectinload, joinedload
-from sqlalchemy.ext.asyncio import AsyncSession
+# from sqlalchemy import Integer, and_, or_, select, insert, text
+# from sqlalchemy.engine import Result
+# from sqlalchemy.orm import aliased, selectinload, joinedload
+# from sqlalchemy.ext.asyncio import AsyncSession
 
-from . import Reader, Book, Base, db_helper
-from .book_shemas import BookCreate, BookUpdatePartial
-from .reader_shemas import ReaderCreate, ReaderUpdatePartial
+# from bot.core import Reader, Book, Base, db_helper
+# from .book_shemas import BookCreate, BookUpdatePartial
+# from .reader_shemas import ReaderCreate, ReaderUpdatePartial
 
 
-class AsyncOrm:
-    @staticmethod
-    async def create_tables():
-        async with db_helper.engine.begin() as conn:
-            await conn.run_sync(Base.metadata.drop_all)
-            await conn.run_sync(Base.metadata.create_all)
+# class AsyncOrm:
+    # @staticmethod
+    # async def create_tables():
+    #     async with db_helper.engine.begin() as conn:
+    #         await conn.run_sync(Base.metadata.drop_all)
+    #         await conn.run_sync(Base.metadata.create_all)
 
     # @staticmethod
     # async def insert_reader(username: str, first_name: str, last_name: str):
